@@ -46,4 +46,9 @@ public class User {
         this.balance = balance;
         this.roles = roles;
     }
+
+
+
+    public User(User user) {
+    }
 }

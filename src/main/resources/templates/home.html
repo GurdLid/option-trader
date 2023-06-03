@@ -12,12 +12,11 @@
 <div class="container">
   <div class="row mt-5">
     <div class="col-6 mx-auto">
-      <h1>Welcome, <span sec:authentication="principal.username"/></h1>
+      <h1>Welcome, <span th:text = "${userdetails.getName()}"/></h1>
 
-      <div sec:authentication="principal.name"></div>
+      <div th:text = "'Your current balance is: £'+${userdetails.getBalance()}"></div>
 
-
-      <div class="btn btn-outline-primary btn-lg"><a class="link-primary" th:href="@{/logout}">Logout</a></div>
+      <div class="btn btn-outline-primary mb-3"><a class="link-primary" th:href="@{/logout}">Logout</a></div>
     </div>
   </div>
 </div>

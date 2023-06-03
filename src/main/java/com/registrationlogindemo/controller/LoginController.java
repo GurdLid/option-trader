@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.math.BigDecimal;
+
 @Controller
 public class LoginController {
 
@@ -40,11 +42,16 @@ public class LoginController {
 
         if (existingUser != null)
             result.rejectValue("email", null,
-                    "User already registered !!!");
+                    "User already registered");
 
         if (result.hasErrors()) {
             model.addAttribute("user", userDto);
             return "/registration";
+        }
+
+        if(userDto.getBalance() == null)
+        {
+            userDto.setBalance(new BigDecimal("0.0"));
         }
 
         userService.saveUser(userDto);

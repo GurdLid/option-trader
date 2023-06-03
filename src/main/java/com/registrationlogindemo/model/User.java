@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,11 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
+    @Column
+    private BigDecimal balance;
+
+
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_roles",
@@ -33,10 +39,11 @@ public class User {
     )
     private List<Role> roles = new ArrayList<>();
 
-    public User(String name, String email, String password, List<Role> roles) {
+    public User(String name, String email, String password, BigDecimal balance, List<Role> roles) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.balance = balance;
         this.roles = roles;
     }
 }

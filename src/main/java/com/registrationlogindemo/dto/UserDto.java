@@ -1,11 +1,14 @@
 package com.registrationlogindemo.dto;
 
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -23,4 +26,8 @@ public class UserDto {
 
     @NotEmpty(message = "Please enter valid password.")
     private String password;
+
+    @Digits(integer = 11,fraction = 2,message = "Please enter a valid Balance (2 decimal places)")
+    private BigDecimal balance;
+
 }

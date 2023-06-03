@@ -5,6 +5,7 @@ import com.registrationlogindemo.model.User;
 import com.registrationlogindemo.repository.OptionRepository;
 import com.registrationlogindemo.repository.StockPriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -24,12 +25,6 @@ public class OptionServiceImpl implements OptionService{
     //Characteristics related to the stock
     private static final BigDecimal RISK_FREE_RATE = new BigDecimal("0.05");
     private static final BigDecimal VOLATILITY = new BigDecimal("0.25");
-
-    public List<Option> getAllOptionsByUser(User user)
-    {
-        //List<Option> options = optionRepository.findAllById(User user);
-        return null;
-    }
 
 
     @Override
@@ -56,5 +51,11 @@ public class OptionServiceImpl implements OptionService{
         allDates.add(today.plusYears(5)); //Five years
         allDates.add(today.plusYears(10)); //Ten years
         return allDates;
+    }
+
+    @Override
+    public List<Option> getAllOptionsByUser(long id) {
+        //List<Option> options = optionRepository.getOptionsForUser(id);
+        return null;
     }
 }

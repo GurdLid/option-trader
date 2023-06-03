@@ -30,7 +30,7 @@ public class User {
     private BigDecimal balance;
 
     @OneToMany(mappedBy = "owner")
-    private List<Option> options;
+    private List<Option> options = new ArrayList<>();
 
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

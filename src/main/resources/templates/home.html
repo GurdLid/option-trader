@@ -14,6 +14,8 @@
   <div class="row mt-5">
     <div class="col-6 mx-auto">
       <h1>Welcome, <span th:text = "${userdetails.getName()}"/></h1>
+      <div class="btn btn-outline-primary mb-3"><a class="link-primary" th:href="@{/logout}">Logout</a></div>
+
       <div class="col text-center m-3">
         <a th:href="@{/stockprices}" class="btn btn-outline-primary btn-lg">Stock Prices and Chart</a>
        <!-- <a href="stockchart.html" class="btn btn-outline-primary btn-lg">Stock Chart</a> -->
@@ -21,11 +23,15 @@
 
       <div th:text = "'Your current balance is: £'+${userdetails.getBalance()}"></div>
 
-      <div class="btn btn-outline-primary mb-3"><a class="link-primary" th:href="@{/logout}">Logout</a></div>
     </div>
-
-
   </div>
+
+
+
+
+
+
+
 
   <div class="row m-4 border border-dark">
     <div class="col text-center m-3">

@@ -30,7 +30,7 @@ public class HomeController {
     @Autowired
     OptionService optionService;
 
-    Set<ConstraintViolation<Option>> violations = new HashSet<>();
+    //Set<ConstraintViolation<Option>> violations = new HashSet<>();
 
     @GetMapping("/")
     public String registrationForm(Model model) {
@@ -42,7 +42,10 @@ public class HomeController {
 
         model.addAttribute("userdetails",userDetails);
 
+        //long userId = userDetails.getId();
 
+        //List<Option> options = optionService.getAllOptionsByUser(userId);
+        //model.addAttribute(options);
 
         return "home";
     }

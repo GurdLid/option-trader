@@ -29,6 +29,8 @@ public class User {
     @Column
     private BigDecimal balance;
 
+    @OneToMany(mappedBy = "owner")
+    private List<Option> options;
 
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

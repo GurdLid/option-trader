@@ -1,5 +1,6 @@
 package com.registrationlogindemo.config;
 
+import com.registrationlogindemo.service.StockPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +16,11 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SpringSecurity {
 
     private final UserDetailsService service;
+
     @Autowired
     public SpringSecurity(UserDetailsService service) {
         this.service = service;
     }
-
-
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -33,6 +33,7 @@ public class SpringSecurity {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/registration/**").permitAll()
                         .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/stockprices/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/home/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN")

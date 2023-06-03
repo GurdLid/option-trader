@@ -47,8 +47,6 @@ public class User {
         this.roles = roles;
     }
 
-
-
     public User(User user) {
     }
 }

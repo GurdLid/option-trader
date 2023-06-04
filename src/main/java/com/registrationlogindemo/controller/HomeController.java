@@ -55,12 +55,9 @@ public class HomeController {
 
         return "home";
     }
-/*
-    @GetMapping("purchase")
-    public String buyOption()
-    {
-        return "addOption.html";
-    }
+
+
+    /*
 
 
     @PostMapping("addOption")

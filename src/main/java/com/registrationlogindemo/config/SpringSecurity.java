@@ -35,6 +35,7 @@ public class SpringSecurity {
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/stockprices/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/buyoption/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/home/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()

@@ -7,38 +7,40 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <link rel="shortcut icon" type="image/png" th:href="@{/favicon.ico}"/>
 
-  <title>Option Trading</title>
+  <title>Option Trader</title>
 </head>
 <body>
 <div class="container">
-  <div class="row mt-5">
-    <div class="col-6 mx-auto">
-      <h1>Welcome, <span th:text = "${userdetails.getName()}"/></h1>
-      <div class="btn btn-outline-primary mb-3"><a class="link-primary" th:href="@{/logout}">Logout</a></div>
+  <div class="row m-4">
+    <div class="col text-center m-4">
+      <div class="col text-center border border-dark">
+        <h1>Option Trader</h1>
+      </div>
+      <h2>Welcome, <span th:text = "${userdetails.getName()}"/>
+      <a class="btn btn-outline-primary mb-3" th:href="@{/logout}">Logout</a>
+      </h2>
 
       <div class="col text-center m-3">
         <a th:href="@{/stockprices}" class="btn btn-outline-primary btn-lg">Stock Prices and Chart</a>
-       <!-- <a href="stockchart.html" class="btn btn-outline-primary btn-lg">Stock Chart</a> -->
-      </div>
+        <a th:href="@{/buyoption}" class="btn btn-outline-primary btn-lg">Purchase an Option</a>
 
-      <div th:text = "'Your current balance is: £'+${userdetails.getBalance()}"></div>
+      </div>
+      <div class="col text-center m-3">
+        <h3>Your current Balance is: £<span th:text = "${userdetails.getBalance()}"/></h3>
+      </div>
 
     </div>
   </div>
 
 
-
-
-
-
-
-
   <div class="row m-4 border border-dark">
     <div class="col text-center m-3">
+      <h3>Active Options</h3>
       <table class="table table-striped">
         <thead>
         <tr>
           <th>ID</th>
+          <th>Type</th>
           <th>Strike Price</th>
           <th>Purchase Price</th>
           <th>Expiry Date</th>
@@ -47,6 +49,33 @@
         <tbody>
         <tr th:each="option : ${options}">
           <td th:text="${option.id}">ID</td>
+          <td th:text="${option.optionType} ? 'Call' : 'Put'" >Type</td>
+          <td th:text="'£'+${option.strikePrice}">Strike Price</td>
+          <td th:text="'£'+${option.price}">Purchase Price</td>
+          <td th:text="${option.expiryDate}">Expiry Date</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row m-4 border border-dark">
+    <div class="col text-center m-3">
+      <h3>Expired Options</h3>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Strike Price</th>
+          <th>Purchase Price</th>
+          <th>Expiry Date</th>
+          <th>Outcome</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="option : ${options}">
+          <td th:text="${option.id}">ID</td>
+          <td th:text="${option.optionType} ? 'Call' : 'Put'" >Type</td>
           <td th:text="'£'+${option.strikePrice}">Strike Price</td>
           <td th:text="'£'+${option.price}">Purchase Price</td>
           <td th:text="${option.expiryDate}">Expiry Date</td>

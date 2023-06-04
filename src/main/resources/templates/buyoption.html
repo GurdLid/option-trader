@@ -26,53 +26,61 @@
     <div class="col-3 text-center m-3">
       <span class="h3">Purchase Option</span>
     </div>
-    <div class="col-7 text-center m-3">
-      <form action="buyoption" method="POST">
+    <div class="col-6 mx-auto">
+      <form
+              method="post"
+              role="form"
+              th:action="@{/buyoption}"
+              th:object="${option}"
+      >
         <div th:if="${param.success}">
           <div class="alert alert-info">
-            You have successfully registered for Option Trader
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="strikePrice" class="col-3 col-form-label">
-            Strike Price</label>
-          <div class="col-9">
-            <input type="text" name="strikePrice"
-                   id="strikePrice" class="form-control"/>
+            You have successfully bought an Option
           </div>
         </div>
 
-        <div class="form-group row">
-          <label for="expiryDate" class="col-3 col-form-label">
-            Expiry Date</label>
-          <div class="col-9">
-            <select id="expiryDate" name="expiryDate" class="form-control" >
-              <option th:each="expiryDate : ${expiryDates}"
-                      th:value="${expiryDate}"
-                      th:text="${expiryDate}">
-                Expiry Date</option>
-            </select>
-          </div>
+        <div class="mb-3">
+          <label class="form-label" for="strikePrice">Strike Price</label>
+          <input class="form-control" id="strikePrice" name="strikePrice" type="text">
+          <!--
+          <p class="text-danger" th:errors="*{strikePrice}"
+             th:if="${#fields.hasErrors('strikePrice')}"></p>
+             -->
         </div>
 
-        <div class="form-group row">
-          <label for="optionType" class="col-3 col-form-label">
-            Call/Put </label>
-          <div class="col-9">
-            <select id="optionType" name="optionType" class="form-control" >
-              <option th:each="optionType : ${optionTypes}"
-                      th:value="${optionType}"
-                      th:text="${optionType}">
-                Option Type</option>
-            </select>
-          </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="optionType">Option Type</label>
+          <select  id="optionType" name="optionType" class="form-control" >
+            <option th:value="'true'" th:text="Call"></option>
+            <option th:value="'false'" th:text="Put"></option>
+          </select>
+          <!--
+             -->
         </div>
-        <button type="submit" class="btn btn-primary">Purchase Option</button>
+
+        <div class="mb-3">
+          <label class="form-label" for="expiryDate">Expiry Date</label>
+          <select id="expiryDate" name="expiryDate" class="form-control" >
+            <option th:each="expiryDate : ${expiryDates}"
+                    th:value="${expiryDate}"
+                    th:text="${expiryDate}">
+              Expiry Date</option>
+          </select>
+          <!--
+             -->
+        </div>
+
+
+        <div class="mb-3">
+          <button class="btn btn-primary mb-3" type="submit">Purchase</button>
+        </div>
       </form>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</div>
 </body>
 </html>

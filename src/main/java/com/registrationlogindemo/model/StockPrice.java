@@ -23,10 +23,5 @@ public class StockPrice {
     @Column(nullable = false)
     private BigDecimal price;
 
-    public static List<StockPrice> allPrices = new ArrayList<>();
-
-    public static List<LocalDate> allDates = new ArrayList<>();
-
-
 
 }

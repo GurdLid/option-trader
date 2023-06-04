@@ -13,7 +13,5 @@ import java.util.List;
 
 @Repository
 public interface OptionRepository extends JpaRepository<Option, Long> {
-    //Possible find by trader id?
-    //@Query("SELECT u FROM options u WHERE u.owner.id = :userId")
     List<Option> findByOwner(User user);
 }

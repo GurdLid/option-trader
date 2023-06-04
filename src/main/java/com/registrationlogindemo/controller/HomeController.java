@@ -35,8 +35,6 @@ public class HomeController {
     @Autowired
     UserService userService;
 
-    //Set<ConstraintViolation<Option>> violations = new HashSet<>();
-
     @GetMapping("/")
     public String registrationForm(Model model) {
         CustomUserDetails userDetails =
@@ -48,9 +46,11 @@ public class HomeController {
         model.addAttribute("userdetails",userDetails);
 
         User user = userService.findUserByEmail(userDetails.getUsername());
+        BigDecimal balance = user.getBalance();
+        model.addAttribute("balance",balance);
+
 
         List<Option> options = user.getOptions();
-
         model.addAttribute("options",options);
 
         return "home";

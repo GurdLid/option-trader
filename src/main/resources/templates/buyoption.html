@@ -14,17 +14,25 @@
   <div class="row m-4">
     <div class="col text-center border border-dark">
       <h1>Option Trader</h1>
+      <a class="btn btn-outline-primary mb-3" th:href="@{/logout}">Logout</a>
     </div>
 
     <div class="col text-center m-3">
       <a href="stockprices" class="btn btn-outline-primary btn-lg">Stock Prices and Chart</a>
       <a href="home/" class="btn btn-outline-primary btn-lg">Home</a>
     </div>
+
   </div>
 
   <div class="row m-4 border border-dark">
     <div class="col-3 text-center m-3">
       <span class="h3">Purchase Option</span>
+
+      <div class="col text-center m-3">
+        <h5>Option Price: £<span th:text = "${price}"/></h5>
+        <h5>Current Balance: £<span th:text = "${balance}"/></h5>
+      </div>
+
     </div>
     <div class="col-6 mx-auto">
       <form
@@ -35,19 +43,17 @@
       >
         <div th:if="${param.success}">
           <div class="alert alert-info">
-            You have successfully bought an Option
+            Option successfully purchased
           </div>
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="strikePrice">Strike Price</label>
           <input class="form-control" id="strikePrice" name="strikePrice" type="text">
-          <!--
           <p class="text-danger" th:errors="*{strikePrice}"
              th:if="${#fields.hasErrors('strikePrice')}"></p>
-             -->
-        </div>
 
+        </div>
 
         <div class="mb-3">
           <label class="form-label" for="optionType">Option Type</label>
@@ -55,8 +61,8 @@
             <option th:value="'true'" th:text="Call"></option>
             <option th:value="'false'" th:text="Put"></option>
           </select>
-          <!--
-             -->
+          <p class="text-danger" th:errors="*{optionType}"
+             th:if="${#fields.hasErrors('optionType')}"></p>
         </div>
 
         <div class="mb-3">
@@ -67,17 +73,40 @@
                     th:text="${expiryDate}">
               Expiry Date</option>
           </select>
-          <!--
-             -->
+          <p class="text-danger" th:errors="*{expiryDate}"
+             th:if="${#fields.hasErrors('expiryDate')}"></p>
         </div>
-
 
         <div class="mb-3">
           <button class="btn btn-primary mb-3" type="submit">Purchase</button>
         </div>
       </form>
+      <div class="col text-center m-3">
+        <span class="h3"><td th:text="${funds} ? 'Insufficient funds for purchase' : ''" /></span>
+      </div>
+
     </div>
+
 </div>
+  <div class="row m-4 border border-dark">
+    <div class="col text-center m-3">
+      <span class="h3">Latest Stock Prices</span>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Date</th>
+          <th>Stock Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="stockprice : ${lateststockprices}">
+          <td th:text="${stockprice.date}">Stock Price</td>
+          <td th:text="'£'+${stockprice.price}">Stock Price</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

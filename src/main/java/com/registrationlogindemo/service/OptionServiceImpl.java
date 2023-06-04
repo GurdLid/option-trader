@@ -54,8 +54,10 @@ public class OptionServiceImpl implements OptionService{
     }
 
     @Override
-    public List<Option> getAllOptionsByUser(long id) {
-        //List<Option> options = optionRepository.getOptionsForUser(id);
+    public List<Option> getAllOptionsByUser(User user) {
+        List<Option> options = optionRepository.findByOwner(user);
+        System.out.println(options.get(0).getId());
         return null;
     }
+
 }

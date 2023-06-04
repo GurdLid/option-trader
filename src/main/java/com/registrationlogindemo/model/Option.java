@@ -36,7 +36,7 @@ public class Option {
     private boolean optionType;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="userId")
     private User owner;
 
 

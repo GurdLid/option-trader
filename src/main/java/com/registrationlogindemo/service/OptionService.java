@@ -1,6 +1,7 @@
 package com.registrationlogindemo.service;
 
 import com.registrationlogindemo.model.Option;
+import com.registrationlogindemo.model.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ public interface OptionService {
 
     List<LocalDate> possibleExpiryDates();
 
-    public List<Option> getAllOptionsByUser(long id);
+    public List<Option> getAllOptionsByUser(User user);
 
 
 }

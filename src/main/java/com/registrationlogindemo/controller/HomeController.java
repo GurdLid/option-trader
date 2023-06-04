@@ -3,7 +3,9 @@ package com.registrationlogindemo.controller;
 import com.registrationlogindemo.dto.OptionDto;
 import com.registrationlogindemo.model.CustomUserDetails;
 import com.registrationlogindemo.model.Option;
+import com.registrationlogindemo.model.User;
 import com.registrationlogindemo.service.OptionService;
+import com.registrationlogindemo.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -30,6 +32,9 @@ public class HomeController {
     @Autowired
     OptionService optionService;
 
+    @Autowired
+    UserService userService;
+
     //Set<ConstraintViolation<Option>> violations = new HashSet<>();
 
     @GetMapping("/")
@@ -42,10 +47,11 @@ public class HomeController {
 
         model.addAttribute("userdetails",userDetails);
 
-        //long userId = userDetails.getId();
+        User user = userService.findUserByEmail(userDetails.getUsername());
 
-        //List<Option> options = optionService.getAllOptionsByUser(userId);
-        //model.addAttribute(options);
+        List<Option> options = user.getOptions();
+
+        model.addAttribute("options",options);
 
         return "home";
     }

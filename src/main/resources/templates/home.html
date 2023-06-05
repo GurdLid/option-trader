@@ -8,40 +8,32 @@
   <link rel="shortcut icon" type="image/png" th:href="@{/favicon.ico}"/>
 
   <title>Option Trader</title>
-  <style>
-    body {
-      background-color: #CAD4DE;
-    }
-    .heading { color: #FF0000; }
-</style>
+
 
 </head>
 <body>
 <div class="container">
+
   <div class="row m-4">
-
-      <div class="col text-center border border-dark">
-        <h1 class="heading">Option Trader</h1>
-        <a class="btn btn-outline-primary mb-3" th:href="@{/logout}">Logout</a>
-      </div>
-      <div class="col text-center m-3">
-        <a th:href="@{/stockprices}" class="btn btn-outline-primary btn-lg">Stock Prices and Chart</a>
-        <a th:href="@{/buyoption}" class="btn btn-outline-primary btn-lg">Purchase an Option</a>
-      </div>
-  </div>
-  <div class="col text-center m-4">
-    <h2>Welcome, <span th:text = "${userdetails.getName()}"/>
-    </h2>
-
-
-    <div class="col text-center m-3">
-      <h3>Your current Balance is: £<span th:text = "${balance}"/></h3>
+    <div class="col-6 mx-auto">
+      <img src="https://i.imgur.com/UAD9U4J.png" style="width:450px;height:100px;">
+      <a class="btn btn-warning mb-3" th:href="@{/logout}">Logout</a>
     </div>
 
-  </div>
-
-  <div class="row m-4 border border-dark">
     <div class="col text-center m-3">
+      <a th:href="@{/stockprices}" class="btn btn-warning btn-lg">Stock Prices and Chart</a>
+      <a th:href="@{/buyoption}" class="btn btn-warning btn-lg">Purchase an Option</a>
+    </div>
+  </div>
+  <div class="row m-4">
+    <div class="col text-center m-3">
+    <h2>Welcome, <span th:text = "${userdetails.getName()}"/>
+    </h2>
+      <h3>Current Balance: £<span th:text = "${balance}"/></h3>
+    </div>
+  </div>
+  <div class="row m-5">
+    <div class="col text-center m-4">
       <h3>Active Options</h3>
       <table class="table table-striped">
         <thead>
@@ -65,8 +57,8 @@
       </table>
     </div>
   </div>
-  <div class="row m-4 border border-dark">
-    <div class="col text-center m-3">
+  <div class="row m-5">
+    <div class="col text-center m-4">
       <h3>Expired Options</h3>
       <table class="table table-striped">
         <thead>

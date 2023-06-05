@@ -12,24 +12,24 @@
 <body>
 <div class="container">
   <div class="row m-4">
-    <div class="col text-center border border-dark">
-      <h1>Option Trader</h1>
-      <a class="btn btn-outline-primary mb-3" th:href="@{/logout}">Logout</a>
+    <div class="col-6 mx-auto">
+      <img src="https://i.imgur.com/UAD9U4J.png" style="width:450px;height:100px;">
+      <a class="btn btn-warning mb-3" th:href="@{/logout}">Logout</a>
     </div>
 
     <div class="col text-center m-3">
-      <a href="stockprices" class="btn btn-outline-primary btn-lg">Stock Prices and Chart</a>
-      <a href="home/" class="btn btn-outline-primary btn-lg">Home</a>
+      <a href="stockprices" class="btn btn-warning btn-lg">Stock Prices and Chart</a>
+      <a href="home/" class="btn btn-warning btn-lg">Home</a>
     </div>
 
   </div>
 
-  <div class="row m-4 border border-dark">
+  <div class="row m-4 ">
     <div class="col-3 text-center m-3">
       <span class="h3">Purchase Option</span>
 
       <div class="col text-center m-3">
-        <h5>Option Price: £<span th:text = "${price}"/></h5>
+<!--        <h5>Option Price: £<span th:text = "${price}"/></h5> -->
         <h5>Current Balance: £<span th:text = "${balance}"/></h5>
       </div>
 
@@ -78,7 +78,7 @@
         </div>
 
         <div class="mb-3">
-          <button class="btn btn-primary mb-3" type="submit">Purchase</button>
+          <button class="btn btn-warning mb-3" type="submit">Purchase</button>
         </div>
       </form>
       <div class="col text-center m-3">
@@ -88,7 +88,7 @@
     </div>
 
 </div>
-  <div class="row m-4 border border-dark">
+  <div class="row m-4 ">
     <div class="col text-center m-3">
       <span class="h3">Latest Stock Prices</span>
       <table class="table table-striped">

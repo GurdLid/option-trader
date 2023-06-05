@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JS StockChart</title>
+  <title>Option Trader</title>
   <link href="style.css" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
@@ -19,16 +19,18 @@
 <body>
 <div class="container">
   <div class="row m-4">
-    <div class="col text-center border border-dark">
-      <h1>Option Trader</h1>
-      <a class="btn btn-outline-primary mb-3" href="logout">Logout</a>
+    <div class="col-6 mx-auto">
+      <img src="https://i.imgur.com/UAD9U4J.png" style="width:450px;height:100px;">
+      <a class="btn btn-warning mb-3" href="logout">Logout</a>
     </div>
-
     <div class="col text-center m-3">
-      <a href="stockprices" class="btn btn-outline-primary btn-lg">Stock Prices</a>
-      <a href="home/" class="btn btn-outline-primary btn-lg">Home</a>
+      <a href="stockprices" class="btn btn-warning btn-lg">Stock Prices</a>
+      <a href="home/" class="btn btn-warning btn-lg">Home</a>
     </div>
   </div>
+</div>
+<div class="col text-center m-3">
+<h3>Gurdeep Inc. Stock Chart</h3>
 </div>
 <div id="container"></div>
 <script type="text/javascript">
@@ -83,7 +85,7 @@
       chart.selectRange('2013-06-01', today);
 
 
-      chart.title('Gurdeep Inc. Stock Chart');
+      /* chart.title('Gurdeep Inc. Stock Chart'); */
 
       chart.container('container');
 

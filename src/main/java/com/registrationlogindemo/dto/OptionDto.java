@@ -29,6 +29,11 @@ public class OptionDto {
 
     private int traderId;
 
+    private BigDecimal profit;
+
+    private boolean resolved;
+
+
     @Override
     public String toString() {
         return "OptionDto{" +

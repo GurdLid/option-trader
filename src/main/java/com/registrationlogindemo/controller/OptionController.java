@@ -88,25 +88,6 @@ public class OptionController {
 
         model.addAttribute("price",optionDto.getPrice());
 
-        BigDecimal currentBalance = currentUser.getBalance();
-
-        userService.resolveBalance(currentUser,optionDto.getPrice()); //Seeing if user has enough money in account
-        boolean sufficientFunds = true;
-        if(currentBalance == currentUser.getBalance()) //balance did not change, insuffucient funds
-        {
-            sufficientFunds = false;
-            model.addAttribute("funds",sufficientFunds);
-            List<LocalDate> expiryDates = optionService.possibleExpiryDates();
-            model.addAttribute("expiryDates", expiryDates);
-            model.addAttribute("option", optionDto);
-
-            System.out.println("not enough funds, remaining = " + currentUser.getBalance());
-
-            return "buyoption";
-        }
-        model.addAttribute("funds",sufficientFunds);
-
-
         if (result.hasErrors()) {
             List<LocalDate> expiryDates = optionService.possibleExpiryDates();
             model.addAttribute("expiryDates", expiryDates);
@@ -114,11 +95,19 @@ public class OptionController {
             return "buyoption";
         }
 
-        //need to update User and SaveOption
-        model.addAttribute("balance",currentBalance);
+        BigDecimal balanceBeforePurchase = currentUser.getBalance();
+        userService.resolvePurchase(currentUser,optionDto);
+        if(currentUser.getBalance().equals(balanceBeforePurchase)) // they could not afford the option
+        {
+            List<LocalDate> expiryDates = optionService.possibleExpiryDates();
+            model.addAttribute("expiryDates", expiryDates);
+            model.addAttribute("option", optionDto);
+            return "buyoption";
+        }
 
-        optionService.addOption(optionDto);
+        optionService.addOption(optionDto); //only saving the option and user if all is successful
         userService.saveUser(currentUser);
+        model.addAttribute("balance",currentUser.getBalance());
 
         return "redirect:/buyoption?success";
     }

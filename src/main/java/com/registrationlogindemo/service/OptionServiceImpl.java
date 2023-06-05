@@ -10,6 +10,7 @@ import com.registrationlogindemo.repository.UserRepository;
 import com.registrationlogindemo.util.BigDecimalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -167,6 +168,73 @@ public class OptionServiceImpl implements OptionService{
         optionRepository.save(option);
     }
 
+    @Override
+    public void updateOption(OptionDto optionDto){
+        Option option = new Option();
+
+        long traderId = optionDto.getTraderId();
+        User user = userRepository.findById(traderId);
+
+        option.setPrice(optionDto.getPrice());
+        option.setOptionType(optionDto.isOptionType());
+        option.setOwner(user);
+        option.setExpiryDate(optionDto.getExpiryDate());
+        option.setPurchaseDate(optionDto.getPurchaseDate());
+        option.setStrikePrice(optionDto.getStrikePrice());
+
+        optionRepository.save(option);
+    }
+
+    @Override
+    public void updateOption(Option option){
+        optionRepository.save(option);
+    }
+
+
+    @Override
+    public List<Option> getActiveOptions(List<Option> allOptions){
+        List<Option> activeOptions = new ArrayList<>();
+        for(Option option: allOptions)
+        {
+            if(option.getResolved()==false)
+            {
+                activeOptions.add(option);
+            }
+        }
+
+        return activeOptions;
+    }
+
+    @Override
+    public List<Option> getExpiredOptions(List<Option> allOptions){
+        List<Option> expiredOptions = new ArrayList<>();
+        for(Option option: allOptions)
+        {
+            if(option.getResolved()==true)
+            {
+                expiredOptions.add(option);
+            }
+        }
+        return expiredOptions;
+    }
+
+    public void resolveTodaysOptionOutcomes(List<Option> activeOptions){
+        for(Option option: activeOptions){
+            if(option.getExpiryDate().equals(LocalDate.now()))
+            {
+                BigDecimal todaysPrice = stockPriceRepository.findByDate(LocalDate.now()).getPrice();
+                BigDecimal net = todaysPrice.subtract(option.getStrikePrice(),MathContext.DECIMAL32);
+                if(net.compareTo(new BigDecimal("0.0"))==1) //i.e the net profit is more than £0
+                {
+                    option.setProfit(net);
+                }
+                else{
+                    option.setProfit(new BigDecimal("0.0")); //no profit on this option
+                }
+                optionRepository.save(option);
+            }
+        }
+    }
 
 
 

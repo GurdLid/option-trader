@@ -1,6 +1,8 @@
 package com.registrationlogindemo.service;
 
+import com.registrationlogindemo.dto.OptionDto;
 import com.registrationlogindemo.dto.UserDto;
+import com.registrationlogindemo.model.Option;
 import com.registrationlogindemo.model.User;
 
 import java.math.BigDecimal;
@@ -12,5 +14,7 @@ public interface UserService {
 
     User findUserByEmail(String email);
 
-    void resolveBalance(User user, BigDecimal optionPrice);
+    void resolveTodaysBalance(User user, List<Option> options);
+
+    void resolvePurchase(User user, OptionDto option);
 }

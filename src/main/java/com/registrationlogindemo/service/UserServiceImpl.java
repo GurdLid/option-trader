@@ -1,8 +1,11 @@
 package com.registrationlogindemo.service;
 
+import com.registrationlogindemo.dto.OptionDto;
 import com.registrationlogindemo.dto.UserDto;
+import com.registrationlogindemo.model.Option;
 import com.registrationlogindemo.model.Role;
 import com.registrationlogindemo.model.User;
+import com.registrationlogindemo.repository.OptionRepository;
 import com.registrationlogindemo.repository.RoleRepository;
 import com.registrationlogindemo.repository.UserRepository;
 import com.registrationlogindemo.util.TbConstants;
@@ -12,13 +15,17 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private OptionRepository optionRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -49,14 +56,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void resolveBalance(User user, BigDecimal optionPrice)
-    {
-        BigDecimal currentBalance = user.getBalance();
-        BigDecimal net = currentBalance.subtract(optionPrice, MathContext.DECIMAL32);
-        if(net.compareTo(new BigDecimal("0.0"))==1) {
-            user.setBalance(currentBalance.subtract(optionPrice, MathContext.DECIMAL32));
+    public void resolveTodaysBalance(User user, List<Option> options) {
+        for(Option option: options){
+            if(option.getExpiryDate().equals(LocalDate.now()) && option.getResolved()==false){
+                user.setBalance(user.getBalance().add(option.getProfit(), MathContext.DECIMAL32));
+                option.setResolved(true); //option has been resolved (profit added to balance)
+                optionRepository.save(option); //updating the option to the database
+            }
         }
-        //If the net balance is more than 0, complete the purchase, else leave balance as it is.
+    }
+
+    public void resolvePurchase(User user, OptionDto option)
+    {
+        BigDecimal optionPrice = option.getPrice();
+        if(optionPrice.compareTo(user.getBalance())==-1) //i.e. the option is worth less than the user's balance (they can purchase it)
+        {
+            user.setBalance(user.getBalance().subtract(optionPrice,MathContext.DECIMAL32));
+            //Setting the new balance = old balance - option price
+        }
+        //Else the balance remains the same, option cannot be purchased
     }
 
 

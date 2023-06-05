@@ -10,4 +10,6 @@ public interface StockPriceService {
     List<StockPrice> getAllStockPricesToToday();
 
 
+
+
 }

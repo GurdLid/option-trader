@@ -36,7 +36,7 @@ public class HomeController {
     UserService userService;
 
     @GetMapping("/")
-    public String registrationForm(Model model) {
+    public String homePage(Model model) {
         CustomUserDetails userDetails =
                 (CustomUserDetails) SecurityContextHolder
                         .getContext()
@@ -46,60 +46,29 @@ public class HomeController {
         model.addAttribute("userdetails",userDetails);
 
         User user = userService.findUserByEmail(userDetails.getUsername());
+        //resolving todays options
+        List<Option> options = user.getOptions();
+        List<Option> activeOptions = optionService.getActiveOptions(options); //this will include todays options as they have yet to resolve and so have profit == null, resolved == false
+
+        optionService.resolveTodaysOptionOutcomes(activeOptions); //todays options now have aa profit column
+        List<Option> expiredOptions = optionService.getExpiredOptions(user.getOptions());
+
+        //Displays options after resolving
+        model.addAttribute("activeOptions",activeOptions);
+        model.addAttribute("expiredOptions",expiredOptions);
+
+        //Now need to apply today's profit to the balance
+        userService.resolveTodaysBalance(user,activeOptions); //Balance is updated
         BigDecimal balance = user.getBalance();
         model.addAttribute("balance",balance);
 
-
-        List<Option> options = user.getOptions();
-        model.addAttribute("options",options);
+        userService.saveUser(user);
 
         return "home";
     }
 
 
-    /*
 
 
-    @PostMapping("addOption")
-    public String addOption(HttpServletRequest request) {
-        String strikePrice = request.getParameter("strikePrice");
-        String expiryDate = request.getParameter("expiryDate");
-        String optionType = request.getParameter("optionType");
-
-        Option option = new Option();
-        if(!strikePrice.isBlank()) {
-            option.setStrikePrice(new BigDecimal(strikePrice));
-        }
-        else
-        {
-            option.setStrikePrice(new BigDecimal("99.99999"));
-        }
-
-        option.setExpiryDate(LocalDate.parse(expiryDate));
-        option.setPurchaseDate(LocalDate.now());
-        if(optionType.contains("Put"))
-        {
-            option.setOptionType(false);
-        }
-        else {
-            option.setOptionType(true);
-        }
-
-        optionService.calculateOptionPrice(option);
-
-        Validator validate = (Validator) Validation.buildDefaultValidatorFactory().getValidator();
-        violations = validate.validate(option);
-
-        System.out.println(violations);
-
-        if(violations.isEmpty()) {
-
-        }
-
-        return "redirect:/home";
-    }
-
-
- */
 
 }

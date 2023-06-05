@@ -3,10 +3,7 @@ package com.registrationlogindemo.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.cglib.core.Local;
 
 import java.math.BigDecimal;
@@ -39,5 +36,23 @@ public class Option {
     @JoinColumn(name="userId")
     private User owner;
 
+    @Column
+    private BigDecimal profit;
 
+    @Column(nullable = false,columnDefinition = "boolean default false")
+    private Boolean resolved = false;
+
+    @Override
+    public String toString() {
+        return "Option{" +
+                "id=" + id +
+                ", strikePrice=" + strikePrice +
+                ", price=" + price +
+                ", expiryDate=" + expiryDate +
+                ", purchaseDate=" + purchaseDate +
+                ", optionType=" + optionType +
+                ", profit=" + profit +
+                ", resolved=" + resolved +
+                '}';
+    }
 }

@@ -47,7 +47,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="option : ${options}">
+        <tr th:each="option : ${activeOptions}">
           <td th:text="${option.id}">ID</td>
           <td th:text="${option.optionType} ? 'Call' : 'Put'" >Type</td>
           <td th:text="'£'+${option.strikePrice}">Strike Price</td>
@@ -69,16 +69,17 @@
           <th>Strike Price</th>
           <th>Purchase Price</th>
           <th>Expiry Date</th>
-          <th>Outcome</th>
+          <th>Profit</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="option : ${options}">
+        <tr th:each="option : ${expiredOptions}">
           <td th:text="${option.id}">ID</td>
           <td th:text="${option.optionType} ? 'Call' : 'Put'" >Type</td>
           <td th:text="'£'+${option.strikePrice}">Strike Price</td>
           <td th:text="'£'+${option.price}">Purchase Price</td>
           <td th:text="${option.expiryDate}">Expiry Date</td>
+          <td th:text="'£'+${option.profit}">Profit</td>
         </tr>
         </tbody>
       </table>

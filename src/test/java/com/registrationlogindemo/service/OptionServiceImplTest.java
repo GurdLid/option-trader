@@ -52,8 +52,9 @@ class OptionServiceImplTest {
     }
 
 
-    @Test
+    @Test //Test to add an option to a user
     public void testAddOption(){
+        //Creating the user
         String email = "test@gmail.com";
         User userDto = new User();
         userDto.setName("test");
@@ -63,6 +64,7 @@ class OptionServiceImplTest {
         userService.saveUser(userDto);
         userDto.setId(userRepository.findByEmail(email).getId());
 
+        //creating the option
         Option option = new Option();
         option.setOwner(userDto);
         option.setOptionType(true); //Call option
@@ -72,15 +74,17 @@ class OptionServiceImplTest {
         option.setExpiryDate(LocalDate.parse("2024-12-12"));
         optionRepository.save(option);
 
+        //Getting all options owned by the user
         List<Option> options = optionRepository.findByOwner(userDto);
 
-        assertEquals(new BigDecimal("120"), options.get(0).getStrikePrice());
+        assertEquals(new BigDecimal("120"), options.get(0).getStrikePrice()); //ensuring that the option we created is present
         assertEquals(LocalDate.parse("2024-12-12"), options.get(0).getExpiryDate());
     }
 
 
-    @Test
+    @Test //test to get all non expired options
     public void testGetActiveOptions(){
+        //Creating the user
         String email = "test@gmail.com";
         User userDto = new User();
         userDto.setName("test");
@@ -90,6 +94,7 @@ class OptionServiceImplTest {
         userService.saveUser(userDto);
         userDto.setId(userRepository.findByEmail(email).getId());
 
+        //Creating a non expired (active) option
         Option option = new Option();
         option.setOwner(userDto);
         option.setOptionType(true); //Call option
@@ -99,6 +104,7 @@ class OptionServiceImplTest {
         option.setExpiryDate(LocalDate.parse("2024-12-12"));
         optionRepository.save(option);
 
+        //Creating an expired option
         Option option2 = new Option();
         option2.setOwner(userDto);
         option2.setOptionType(true); //Call option
@@ -109,16 +115,18 @@ class OptionServiceImplTest {
         option.setResolved(true);
         optionRepository.save(option2);
 
+        //Getting all options
         List<Option> options = optionRepository.findByOwner(userDto);
-        List<Option> activeOptions = optionService.getActiveOptions(options);
+        List<Option> activeOptions = optionService.getActiveOptions(options); //filtering out the expired ones
 
-        assertEquals(1,activeOptions.size());
-        assertEquals(LocalDate.parse("2022-12-12"),activeOptions.get(0).getExpiryDate());
+        assertEquals(1,activeOptions.size()); //ensuring only the active option remains
+        assertEquals(LocalDate.parse("2022-12-12"),activeOptions.get(0).getExpiryDate()); //with the correct info
     }
 
-    @Test
-    public void testOptionPriceCalculation() //test of accuracy, it should be within a certain range
+    @Test //Test to see if the option's price is within an acceptable range of accuracy
+    public void testOptionPriceCalculation()
     {
+        //Creating a user
         String email = "test@gmail.com";
         User userDto = new User();
         userDto.setName("test");
@@ -128,6 +136,7 @@ class OptionServiceImplTest {
         userService.saveUser(userDto);
         userDto.setId(userRepository.findByEmail(email).getId());
 
+        //Creating the option
         Option option = new Option();
         option.setOwner(userDto);
         option.setOptionType(true); //Call option
@@ -135,14 +144,14 @@ class OptionServiceImplTest {
         option.setPrice(new BigDecimal("0.0"));
         option.setPurchaseDate(LocalDate.parse("2023-06-06"));
         option.setExpiryDate(LocalDate.parse("2025-06-06"));
-        optionRepository.save(option);
+        optionRepository.save(option); //writing to DB
 
-        optionService.calculateOptionPrice(option);
+        optionService.calculateOptionPrice(option); //Calling the calculation method
         BigDecimal actualPrice = new BigDecimal("45.66"); //this is the actual price from an online calc (goodcalculators.com)
-        BigDecimal lowerToleranceBound = new BigDecimal("45.2");
-        BigDecimal upperToleranceBound = new BigDecimal("45.9");
+        BigDecimal lowerToleranceBound = new BigDecimal("45.2"); //Set bounds at 1% either side
+        BigDecimal upperToleranceBound = new BigDecimal("46.0");
 
-        assertEquals(1,option.getPrice().compareTo(lowerToleranceBound));
+        assertEquals(1,option.getPrice().compareTo(lowerToleranceBound)); //Ensuring the calculated price is within the bounds
         assertEquals(-1,option.getPrice().compareTo(upperToleranceBound));
     }
 

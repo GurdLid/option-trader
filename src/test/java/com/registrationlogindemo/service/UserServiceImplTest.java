@@ -165,5 +165,26 @@ class UserServiceImplTest {
         assertEquals(intialBalance, userDto2.getBalance()); //balance shold not change as this user cannot afford this option
     }
 
+    @Test
+    public void testUpdateUser()
+    {
+        User userDto2 = new User();
+        userDto2.setName("tester");
+        userDto2.setEmail("tester@test.co.uk");
+        userDto2.setPassword("passer");
+        userDto2.setBalance(new BigDecimal("100"));
+        userService.saveUser(userDto2);
 
+        UserDto userDto = new UserDto();
+        userDto.setId(userDto2.getId());
+        userDto.setName("test");
+        userDto.setEmail("tester@test.co.uk");
+        userDto.setPassword("pass");
+        userDto.setBalance(new BigDecimal("100"));
+
+        userService.updateUser(userDto);
+        User fromDB = userRepository.findByEmail("tester@test.co.uk");
+
+        assertEquals("test", fromDB.getName());
+    }
 }

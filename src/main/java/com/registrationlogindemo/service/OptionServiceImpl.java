@@ -54,7 +54,7 @@ public class OptionServiceImpl implements OptionService{
     public void calculateOptionPrice(Option option)
     {
         LocalDate purchase = option.getPurchaseDate();
-        BigDecimal spotPrice = (BigDecimal) stockPriceRepository.findAllById(Collections.singleton(purchase));
+        BigDecimal spotPrice = stockPriceRepository.findByDate(purchase).getPrice();
 
         BigDecimal timePeriod = calculateTimePeriod(option);
 
@@ -207,7 +207,6 @@ public class OptionServiceImpl implements OptionService{
                 activeOptions.add(option);
             }
         }
-
         return activeOptions;
     }
 

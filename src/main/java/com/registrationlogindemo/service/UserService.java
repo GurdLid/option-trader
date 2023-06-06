@@ -12,9 +12,8 @@ public interface UserService {
     void saveUser(UserDto userDto);
     void saveUser(User user);
     List<User> getAllUsers();
-
+    public void updateUser(UserDto userDto);
     void deleteUser(long id);
-
     User findUserByEmail(String email);
     void resolveTodaysBalance(User user, List<Option> options);
     void resolvePurchase(User user, OptionDto option);

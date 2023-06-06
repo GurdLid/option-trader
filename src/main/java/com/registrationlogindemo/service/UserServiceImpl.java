@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -62,6 +63,16 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    @Override
+    public void updateUser(UserDto userDto)
+    {
+        User user = userRepository.findById(userDto.getId()).get();
+        user.setName(userDto.getName());
+        user.setPassword(userDto.getName()); //These are the only two things that should be edited
+        userRepository.save(user); //Saving changes back to database
+    }
+
 
     @Override
     @PreRemove

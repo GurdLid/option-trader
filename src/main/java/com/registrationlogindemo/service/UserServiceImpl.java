@@ -40,14 +40,16 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByName(TbConstants.Roles.USER);
 
         if (role == null){
-            if (userDto.getEmail().contains("admin@ot.com")){ //This the only allowed admin username
-                role = roleRepository.save(new Role(TbConstants.Roles.ADMIN));
-            } else {
-                role = roleRepository.save(new Role(TbConstants.Roles.USER));
-            }
+            role = roleRepository.save(new Role(TbConstants.Roles.USER));
+        }
+
+        if(userDto.getEmail().contains("admin@ot.com"))
+        {
+            role = roleRepository.save(new Role(TbConstants.Roles.USER));
         }
         User user = new User(userDto.getName(), userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()),
                 userDto.getBalance(), Arrays.asList(role));
+
         userRepository.save(user);
     }
 

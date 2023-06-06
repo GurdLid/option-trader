@@ -13,17 +13,12 @@ public interface OptionService {
 
     void calculateOptionPrice(Option option);
     void calculateOptionPrice(OptionDto option);
-
     List<LocalDate> possibleExpiryDates();
-
     List<Option> getActiveOptions(List<Option> allOptions);
     List<Option> getExpiredOptions(List<Option> allOptions);
-
-
     void resolveTodaysOptionOutcomes(List<Option> activeOptions);
-
     void addOption(OptionDto optionDto);
-
     void updateOption(OptionDto optionDto);
     void updateOption(Option option);
+    void deleteAllOptions();
 }

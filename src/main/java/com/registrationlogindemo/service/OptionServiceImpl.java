@@ -190,6 +190,12 @@ public class OptionServiceImpl implements OptionService{
         optionRepository.save(option);
     }
 
+    @Override
+    public void deleteAllOptions()
+    {
+        optionRepository.deleteAll();
+    }
+
 
     @Override
     public List<Option> getActiveOptions(List<Option> allOptions){

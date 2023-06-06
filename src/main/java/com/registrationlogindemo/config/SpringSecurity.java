@@ -45,6 +45,7 @@ public class SpringSecurity {
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/home/")
                         .permitAll()
+
                 )
                 .logout((logout) -> logout.permitAll())
                 .exceptionHandling((exceptionHandling) -> exceptionHandling.accessDeniedPage("/access-denied"));

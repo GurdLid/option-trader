@@ -19,7 +19,6 @@ public class CustomUserDetails extends User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // You don't talk about UserRoles, so return ADMIN for everybody or implement roles.
         return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
     }
 

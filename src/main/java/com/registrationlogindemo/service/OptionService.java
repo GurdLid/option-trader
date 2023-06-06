@@ -26,5 +26,4 @@ public interface OptionService {
 
     void updateOption(OptionDto optionDto);
     void updateOption(Option option);
-
 }

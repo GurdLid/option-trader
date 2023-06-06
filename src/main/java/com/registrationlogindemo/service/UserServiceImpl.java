@@ -9,6 +9,7 @@ import com.registrationlogindemo.repository.OptionRepository;
 import com.registrationlogindemo.repository.RoleRepository;
 import com.registrationlogindemo.repository.UserRepository;
 import com.registrationlogindemo.util.TbConstants;
+import jakarta.persistence.PreRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -37,9 +39,13 @@ public class UserServiceImpl implements UserService {
     public void saveUser(UserDto userDto) {
         Role role = roleRepository.findByName(TbConstants.Roles.USER);
 
-        if (role == null)
-            role = roleRepository.save(new Role(TbConstants.Roles.USER));
-
+        if (role == null){
+            if (userDto.getEmail().contains("admin@ot.com")){ //This the only allowed admin username
+                role = roleRepository.save(new Role(TbConstants.Roles.ADMIN));
+            } else {
+                role = roleRepository.save(new Role(TbConstants.Roles.USER));
+            }
+        }
         User user = new User(userDto.getName(), userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()),
                 userDto.getBalance(), Arrays.asList(role));
         userRepository.save(user);
@@ -48,6 +54,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    @PreRemove
+    public void deleteUser(long id) {
+        User user = userRepository.findById(id);
+        Role role = roleRepository.findByName(TbConstants.Roles.USER);
+        user.removeRole(role);
+        userRepository.save(user);
+        roleRepository.save(role);
+        userRepository.deleteById(id);
     }
 
     @Override
@@ -76,7 +98,5 @@ public class UserServiceImpl implements UserService {
         }
         //Else the balance remains the same, option cannot be purchased
     }
-
-
 
 }

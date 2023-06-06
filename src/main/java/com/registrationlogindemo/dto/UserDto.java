@@ -30,6 +30,4 @@ public class UserDto {
     @Digits(integer = 11,fraction = 2,message = "Please enter a valid Balance (2 decimal places)")
     private BigDecimal balance;
 
-    private long user_id;
-
 }

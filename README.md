@@ -4,7 +4,7 @@ Option Trading Platform created in Java, using Spring Boot, Spring Security, Mav
 
 ## Build instructions
 
-Please see BuildInstruction.pdf for more comprehensive instructions.
+Please see BuildInstructions.pdf for more comprehensive instructions.
 
 The chosen server port: 8020
 

@@ -12,6 +12,10 @@
 <div class="container">
   <div class="row mt-5">
     <div class="col-6 mx-auto">
+      <img src="https://i.imgur.com/UAD9U4J.png" style="width:450px;height:100px;">
+    </div>
+    <div class="col-6 mx-auto">
+      <br>
       <form
               method="post"
               role="form"
@@ -21,7 +25,7 @@
         <h1>Registration Form</h1>
         <div th:if="${param.success}">
           <div class="alert alert-info">
-            Registration successful !!!
+            You have successfully registered for Option Trader
           </div>
         </div>
         <div class="mb-3">
@@ -42,6 +46,14 @@
           <p class="text-danger" th:errors="*{password}"
              th:if="${#fields.hasErrors('password')}"></p>
         </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="balance">Balance</label>
+          <input class="form-control" id="balance" name="balance" type="text">
+          <p class="text-danger" th:errors="*{balance}"
+             th:if="${#fields.hasErrors('balance')}"></p>
+        </div>
+
         <div class="mb-3">
           <button class="btn btn-primary mb-3" type="submit">Register</button>
           or <a class="link-primary" th:href="@{/login}">Login</a>

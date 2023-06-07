@@ -18,13 +18,13 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-
+    /**
+     * Implementation of UserService Interface. Includes basic CRUD along with alterations to User's balance depending on option outcomes.
+     */
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -32,19 +32,16 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public void saveUser(UserDto userDto) {
         Role role = roleRepository.findByName(TbConstants.Roles.USER);
-
         if (role == null){
             role = roleRepository.save(new Role(TbConstants.Roles.USER));
         }
-
-        if(userDto.getEmail().contains("admin@ot.com"))
+        if(userDto.getEmail().contains("admin@ot.com")) //This is the only allowed admin account
         {
             role = roleRepository.save(new Role(TbConstants.Roles.USER));
         }
@@ -73,16 +70,15 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user); //Saving changes back to database
     }
 
-
     @Override
     @PreRemove
     public void deleteUser(long id) {
         User user = userRepository.findById(id);
         Role role = roleRepository.findByName(TbConstants.Roles.USER);
-        user.removeRole(role);
+        user.removeRole(role); //This method decouples the user and their role
         userRepository.save(user);
         roleRepository.save(role);
-        userRepository.deleteById(id);
+        userRepository.deleteById(id); //Then deletes the user
     }
 
     @Override
@@ -90,7 +86,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
-    @Override
+    @Override //Method to add any new profit to the user's balance
     public void resolveTodaysBalance(User user, List<Option> options) {
         for(Option option: options){
             if(option.getExpiryDate().equals(LocalDate.now()) && option.getResolved()==false){
@@ -101,6 +97,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    //method to check to see if a user can purchase an option
     public void resolvePurchase(User user, OptionDto option)
     {
         BigDecimal optionPrice = option.getPrice();
@@ -111,5 +108,4 @@ public class UserServiceImpl implements UserService {
         }
         //Else the balance remains the same, option cannot be purchased
     }
-
 }

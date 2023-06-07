@@ -7,8 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.math.BigDecimal;
 import java.util.Collection;
 
-// You want to extend your User class here
 public class CustomUserDetails extends User implements UserDetails {
+    /**
+     * class to provide additional functionality from the Spring Security User class when retrieving details about the current logged in User
+     * Code adapted from stackoverflow (link in Documentation: References)
+     */
     private static final long serialVersionUID = 1L;
     private User user;
 

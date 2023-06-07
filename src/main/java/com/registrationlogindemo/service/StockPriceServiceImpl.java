@@ -1,26 +1,22 @@
 package com.registrationlogindemo.service;
 
-import com.registrationlogindemo.dto.OptionDto;
-import com.registrationlogindemo.model.Option;
 import com.registrationlogindemo.model.StockPrice;
 import com.registrationlogindemo.repository.StockPriceRepository;
-import com.registrationlogindemo.util.BigDecimalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Service
 public class StockPriceServiceImpl implements StockPriceService{
+    /**
+     * Implementation of the StockPriceService interface to display all stockprices into and including today's
+     */
     @Autowired
     StockPriceRepository stockPriceRepository;
-
     @Override
     public List<StockPrice> getAllStockPricesToToday() {
         List<StockPrice> allStocks = stockPriceRepository.findAll();

@@ -1,25 +1,35 @@
 package com.registrationlogindemo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+
 import lombok.*;
-import org.springframework.cglib.core.Local;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "options")
+@Table(name = "options") //This is the name of the table in the MySQL DB
 public class Option {
+    /**
+     * Using Lombok along with JPA for reducing boilerplate code and easy interactions with the MySQL database.
+     * An option has:
+     * an id value
+     * a strikePrice(how much the stock can be purchased for at expiry)
+     * an expiryDate (when the option expires)
+     * a purchaseDate (when the option was purchased)
+     * an optionType (Call option or put option)
+     * a price (a calculated value from the above which is how much the option was bought for)
+     * an owner
+     * the profit recieved from the option when it expires
+     * a boolean to demonstrate that the option has been resolved since it has expired.
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //Auto generated ID
     private Long id;
     @Column(nullable = false)
     private BigDecimal strikePrice;
@@ -32,7 +42,7 @@ public class Option {
     @Column(nullable = false)
     private boolean optionType;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY) //An option can have only one owner, but a user can have many options
     @JoinColumn(name="userId")
     private User owner;
 

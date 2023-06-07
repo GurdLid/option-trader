@@ -14,24 +14,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-
+    /**
+     * Service layer to implement the CustomUserDetails class, to load the user given their username
+     */
     @Autowired
     private UserRepository userRepository;
-
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-
         User user = userRepository.findByEmail(usernameOrEmail);
         if (user != null) {
             return new CustomUserDetails(user);
-
-        /*
-        org.springframework.security.core.userdetails.User(user.getEmail()
-        , user.getPassword(),
-        user.getRoles().stream()
-                .map((role) -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList()));
-         */
         } else {
             throw new UsernameNotFoundException("Invalid email or password");
         }

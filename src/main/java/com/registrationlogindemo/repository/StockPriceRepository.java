@@ -11,7 +11,9 @@ import java.util.List;
 
 @Repository
 public interface StockPriceRepository extends JpaRepository<StockPrice, LocalDate> {
-
-    StockPrice findByDate(LocalDate date);
+    /**
+     * Repository to get stock prices from the DB
+     */
+    StockPrice findByDate(LocalDate date); //Code to find a stockprice when given a date
 
 }

@@ -15,6 +15,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
+    /**
+     * Dto class for the User class. Helps with validation when filling the form to register as a user
+     * It includes all the variables the User does, for more info see the User class
+     */
     private Long id;
 
     @NotEmpty(message = "Please enter valid name.")

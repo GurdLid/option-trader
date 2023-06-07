@@ -5,10 +5,10 @@ import com.registrationlogindemo.dto.UserDto;
 import com.registrationlogindemo.model.Option;
 import com.registrationlogindemo.model.User;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface UserService {
+    //Basic CRUD operations along with User balance operations
     void saveUser(UserDto userDto);
     void saveUser(User user);
     List<User> getAllUsers();

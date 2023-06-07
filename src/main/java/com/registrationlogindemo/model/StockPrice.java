@@ -18,6 +18,10 @@ import java.util.List;
 @Entity
 @Table(name = "stockprices")
 public class StockPrice {
+    /**
+     * Stock prices have a date and the associated price at that date,
+     * where the date acts as the Primary Key
+     */
     @Id
     private LocalDate date;
     @Column(nullable = false)

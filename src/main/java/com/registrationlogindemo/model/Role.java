@@ -18,6 +18,9 @@ import java.util.Set;
 @Entity
 @Table(name = "roles")
 public class Role {
+    /**
+     * Boilerplate Spring Security code adapted from codeburps.com (see Doc: references for link)
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -26,6 +26,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 class OptionServiceImplTest {
+    /**
+     * This is a test class to test the Option Service class, to ensure it is performing CRUD applications along with business logic correctly
+     */
     @Autowired
     private UserRepository userRepository;
     @Autowired

@@ -17,6 +17,9 @@ import java.math.BigDecimal;
 
 @Controller
 public class LoginController {
+    /**
+     * Controller handling logins and registration, mostly boiler plate code adapted from codeburps.com
+     */
 
     @Autowired
     private UserService userService;
@@ -42,16 +45,16 @@ public class LoginController {
 
         if (existingUser != null)
             result.rejectValue("email", null,
-                    "User already registered");
+                    "User already registered"); //If the email entered already belongs to a user, reject registration
 
         if (result.hasErrors()) {
-            model.addAttribute("user", userDto);
+            model.addAttribute("user", userDto); //Reload the page if errors
             return "/registration";
         }
 
         if(userDto.getBalance() == null)
         {
-            userDto.setBalance(new BigDecimal("0.0"));
+            userDto.setBalance(new BigDecimal("0.0")); //If they did not enter a balance, default value = 0
         }
 
         userService.saveUser(userDto);

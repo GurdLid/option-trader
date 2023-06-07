@@ -1,33 +1,26 @@
 package com.registrationlogindemo.controller;
 
-import com.registrationlogindemo.dto.OptionDto;
 import com.registrationlogindemo.model.CustomUserDetails;
-import com.registrationlogindemo.model.Option;
 import com.registrationlogindemo.model.User;
 import com.registrationlogindemo.service.OptionService;
 import com.registrationlogindemo.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @Controller
 @CrossOrigin
 public class AdminController {
+    /**
+     * This is the controller for the admin pages. Currently, there is only the admin page to display all non admin users
+     */
     @Autowired
     OptionService optionService;
 
@@ -40,12 +33,12 @@ public class AdminController {
                 (CustomUserDetails) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
-                        .getPrincipal();
+                        .getPrincipal(); //Getting the details of the current logged in user
 
-        model.addAttribute("userdetails",userDetails);
+        model.addAttribute("userdetails",userDetails); //Adding the user details to the model for front end display purposes
 
-        List<User> traders = userService.getAllUsers();
-        User admin = userService.findUserByEmail("admin@ot.com");
+        List<User> traders = userService.getAllUsers(); //Getting all traders
+        User admin = userService.findUserByEmail("admin@ot.com"); //removing the only admin from the list
         traders.remove(admin);
         model.addAttribute("traders", traders);
 
@@ -53,12 +46,12 @@ public class AdminController {
     }
 
 
-    @GetMapping("deleteUser")
+    @GetMapping("deleteUser") //Method to delete a non admin user
     public String deleteUser(HttpServletRequest request) {
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("id")); //getting the correct user
         userService.deleteUser(id);
 
-        return "redirect:/admin";
+        return "redirect:/admin"; //refreshing the page after deletion
     }
 
 

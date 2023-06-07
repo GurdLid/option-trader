@@ -1,21 +1,15 @@
 package com.registrationlogindemo.controller;
 
 import com.registrationlogindemo.dto.OptionDto;
-import com.registrationlogindemo.dto.UserDto;
 import com.registrationlogindemo.model.CustomUserDetails;
-import com.registrationlogindemo.model.Option;
 import com.registrationlogindemo.model.StockPrice;
 import com.registrationlogindemo.model.User;
 import com.registrationlogindemo.service.OptionService;
 import com.registrationlogindemo.service.StockPriceService;
 import com.registrationlogindemo.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,12 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class OptionController {
+    /**
+     * Controller for purchasing an OPTION
+     */
     @Autowired
     private StockPriceService stockPriceService;
     @Autowired
@@ -43,20 +38,20 @@ public class OptionController {
                 (CustomUserDetails) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
-                        .getPrincipal();
+                        .getPrincipal(); //Getting details of current logged in user
 
         String currentUserEmail = userDetails.getUsername();
         User currentUser = userService.findUserByEmail(currentUserEmail);
         BigDecimal currentBalance = currentUser.getBalance();
-        model.addAttribute("balance",currentBalance);
-
+        model.addAttribute("balance",currentBalance); //Adding their balance to the model to be displayed
 
         OptionDto optionDto = new OptionDto();
         model.addAttribute("option", optionDto);
 
-        List<LocalDate> expiryDates = optionService.possibleExpiryDates();
+        List<LocalDate> expiryDates = optionService.possibleExpiryDates(); //Getting a list of potential expiry dates based on todays date.
         model.addAttribute("expiryDates", expiryDates);
 
+        //this block of code retrieves the three most recent days of stock prices so the purchaser can make a more informed decision
         List<StockPrice> stockPrices = stockPriceService.getAllStockPricesToToday(); 
         List<StockPrice> lastThreePrices = new ArrayList<>();
         for(int i = 0; i<3; i++)
@@ -78,23 +73,24 @@ public class OptionController {
                 (CustomUserDetails) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
-                        .getPrincipal();
+                        .getPrincipal(); //Getting current user info
 
         String currentUserEmail = userDetails.getUsername();
         User currentUser = userService.findUserByEmail(currentUserEmail);
         optionDto.setTraderId(Math.toIntExact(currentUser.getId()));
         optionDto.setPurchaseDate(LocalDate.now());
-        optionService.calculateOptionPrice(optionDto);
+        optionService.calculateOptionPrice(optionDto); //calculating the option price from the entered information
 
         model.addAttribute("price",optionDto.getPrice());
 
         if (result.hasErrors()) {
             List<LocalDate> expiryDates = optionService.possibleExpiryDates();
             model.addAttribute("expiryDates", expiryDates);
-            model.addAttribute("option", optionDto);
+            model.addAttribute("option", optionDto); //This validation is such that if there are errors, reload the page with error messages
             return "buyoption";
         }
 
+        //Checking to see if the user could afford the option
         BigDecimal balanceBeforePurchase = currentUser.getBalance();
         userService.resolvePurchase(currentUser,optionDto);
         if(currentUser.getBalance().equals(balanceBeforePurchase)) // they could not afford the option

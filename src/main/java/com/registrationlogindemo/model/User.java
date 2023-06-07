@@ -19,6 +19,11 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User {
+    /**
+     * Some boilerplate code from codeburps.com (see references for link), along with variables like balance and List of options
+     * A user can have many options, => ManyToOne relationship
+     * A user's email acts as their username
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -67,6 +72,7 @@ public class User {
                 '}';
     }
 
+    //Method to decouple the Users role and the User themselves. this is used for when deleting a user.
     public void removeRole(Role role){
         this.roles.remove(role);
         role.getUsers().remove(this);

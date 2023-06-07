@@ -9,8 +9,6 @@ import com.registrationlogindemo.repository.StockPriceRepository;
 import com.registrationlogindemo.repository.UserRepository;
 import com.registrationlogindemo.util.BigDecimalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -18,11 +16,14 @@ import java.math.MathContext;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
 public class OptionServiceImpl implements OptionService{
+    /**
+     * Implementation of the OptionService interface,
+     * providing methods to get all allowable expiry dates, polymorphic methods to calculate option prices along with some CRUD operatins
+     */
     @Autowired
     OptionRepository optionRepository;
     @Autowired
@@ -37,7 +38,7 @@ public class OptionServiceImpl implements OptionService{
 
     @Override
     public List<LocalDate> possibleExpiryDates() {
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(); //The list of expiry dates is based on today (the purchase date)
         List<LocalDate> allDates = new ArrayList<>();
         allDates.add(today.plusDays(1)); //One day
         allDates.add(today.plusWeeks(1)); //One week
@@ -51,7 +52,7 @@ public class OptionServiceImpl implements OptionService{
 
 
     @Override
-    public void calculateOptionPrice(Option option)
+    public void calculateOptionPrice(Option option) //The option price calculation methods are based on the BS formula, see references for more info
     {
         LocalDate purchase = option.getPurchaseDate();
         BigDecimal spotPrice = stockPriceRepository.findByDate(purchase).getPrice();
@@ -137,7 +138,7 @@ public class OptionServiceImpl implements OptionService{
         }
     }
 
-    public BigDecimal calculateTimePeriod(Option option)
+    public BigDecimal calculateTimePeriod(Option option) //This method calculate the time between purchase and expiry date for the purposes of the price calculation
     {
         BigDecimal optionPeriod = BigDecimal.valueOf(ChronoUnit.DAYS.between(option.getPurchaseDate(), option.getExpiryDate()));
         optionPeriod = optionPeriod.divide(new BigDecimal("365.0", MathContext.DECIMAL32), MathContext.DECIMAL32);
@@ -152,10 +153,10 @@ public class OptionServiceImpl implements OptionService{
     }
 
     @Override
-    public void addOption(OptionDto optionDto){
+    public void addOption(OptionDto optionDto){ //Add an option to the user (when they select purchase option)
         Option option = new Option();
 
-        long traderId = optionDto.getTraderId();
+        long traderId = optionDto.getTraderId(); //Finding the user
         User user = userRepository.findById(traderId);
 
         option.setPrice(optionDto.getPrice());
@@ -165,7 +166,7 @@ public class OptionServiceImpl implements OptionService{
         option.setPurchaseDate(optionDto.getPurchaseDate());
         option.setStrikePrice(optionDto.getStrikePrice());
 
-        optionRepository.save(option);
+        optionRepository.save(option); //Saving to DB
     }
 
     @Override
@@ -197,12 +198,12 @@ public class OptionServiceImpl implements OptionService{
     }
 
 
-    @Override
+    @Override //Method to filter only active options when given a list of all options
     public List<Option> getActiveOptions(List<Option> allOptions){
         List<Option> activeOptions = new ArrayList<>();
         for(Option option: allOptions)
         {
-            if(option.getResolved()==false)
+            if(option.getResolved()==false) //If they have not been resolved, they are active
             {
                 activeOptions.add(option);
             }
@@ -215,7 +216,7 @@ public class OptionServiceImpl implements OptionService{
         List<Option> expiredOptions = new ArrayList<>();
         for(Option option: allOptions)
         {
-            if(option.getResolved()==true)
+            if(option.getResolved()==true) //If they have been resolved, they are expired
             {
                 expiredOptions.add(option);
             }
@@ -223,12 +224,14 @@ public class OptionServiceImpl implements OptionService{
         return expiredOptions;
     }
 
+    //This method is applied on user login. It checks to see if there are any unresolvd options with expiry date = today and add profit
+    //to the User's account if there is any profit
     public void resolveTodaysOptionOutcomes(List<Option> activeOptions){
         for(Option option: activeOptions){
-            if(option.getExpiryDate().equals(LocalDate.now()))
+            if(option.getExpiryDate().equals(LocalDate.now())) //If the expiry date is today from active options
             {
                 BigDecimal todaysPrice = stockPriceRepository.findByDate(LocalDate.now()).getPrice();
-                BigDecimal net = todaysPrice.subtract(option.getStrikePrice(),MathContext.DECIMAL32);
+                BigDecimal net = todaysPrice.subtract(option.getStrikePrice(),MathContext.DECIMAL32); //Seeing if the option made profit
                 if(net.compareTo(new BigDecimal("0.0"))==1) //i.e the net profit is more than £0
                 {
                     option.setProfit(net);
@@ -236,11 +239,9 @@ public class OptionServiceImpl implements OptionService{
                 else{
                     option.setProfit(new BigDecimal("0.0")); //no profit on this option
                 }
-                optionRepository.save(option);
+                optionRepository.save(option); //Saving option to DB
             }
         }
     }
-
-
 
 }

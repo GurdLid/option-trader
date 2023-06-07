@@ -1,6 +1,5 @@
 package com.registrationlogindemo.config;
 
-import com.registrationlogindemo.service.StockPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,23 +26,23 @@ public class SpringSecurity {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+    @Bean //Boilerplate Spring Security code adapted from codeburps.com
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/registration/**").permitAll()
+                        .requestMatchers("/registration/**").permitAll() //Even a non signed in user can access the login and registration pages
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/stockprices/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/buyoption/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/home/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN") //Only the admin should have access to the admin page
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/home/")
+                        .defaultSuccessUrl("/home/")  //Once the login has been successful, the user is taken to the home page.
                         .permitAll()
 
                 )

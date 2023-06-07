@@ -14,6 +14,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OptionDto {
+    /**
+     * Dto class for the Option class. Helps with validation when filling the form to buy an option.
+     * It includes all the variables an option does, for more info see the Option class
+     */
     private Long id;
     @Digits(integer = 11, fraction = 2, message = "Please enter a valid Strike Price (2 decimal places)")
     @DecimalMin("0.00")

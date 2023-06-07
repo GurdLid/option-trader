@@ -1,7 +1,8 @@
 # option-trader
 Option Trading Platform created in Java, using Spring Boot, Spring Security, Maven, Lombok, JPA, Thymleaf
 
-##Build instructions
+## Build instructions
+
 The chosen server port: 8020
 
 The current database set-up process requires some patience, but is soon to be fixed.

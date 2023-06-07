@@ -1,4 +1,5 @@
-# option-trader
+![Option Trader Logo](https://i.imgur.com/UAD9U4J.png)
+
 Option Trading Platform created in Java, using Spring Boot, Spring Security, Maven, Lombok, JPA, Thymleaf
 
 ## Build instructions

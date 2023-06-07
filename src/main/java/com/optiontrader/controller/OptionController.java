@@ -79,9 +79,17 @@ public class OptionController {
         User currentUser = userService.findUserByEmail(currentUserEmail);
         optionDto.setTraderId(Math.toIntExact(currentUser.getId()));
         optionDto.setPurchaseDate(LocalDate.now());
-        optionService.calculateOptionPrice(optionDto); //calculating the option price from the entered information
+        BigDecimal balanceBeforePurchase = currentUser.getBalance();
 
-        model.addAttribute("price",optionDto.getPrice());
+        //this block of code retrieves the three most recent days of stock prices so the purchaser can make a more informed decision
+        List<StockPrice> stockPrices = stockPriceService.getAllStockPricesToToday();
+        List<StockPrice> lastThreePrices = new ArrayList<>();
+        for(int i = 0; i<3; i++)
+        {
+            lastThreePrices.add(stockPrices.get(i));
+        }
+        model.addAttribute("lateststockprices", lastThreePrices);
+        model.addAttribute("balance",balanceBeforePurchase);
 
         if (result.hasErrors()) {
             List<LocalDate> expiryDates = optionService.possibleExpiryDates();
@@ -90,8 +98,14 @@ public class OptionController {
             return "buyoption";
         }
 
+        optionService.calculateOptionPrice(optionDto); //calculating the option price from the entered information
+
+        model.addAttribute("price",optionDto.getPrice());
+
+
+
         //Checking to see if the user could afford the option
-        BigDecimal balanceBeforePurchase = currentUser.getBalance();
+        balanceBeforePurchase = currentUser.getBalance();
         userService.resolvePurchase(currentUser,optionDto);
         if(currentUser.getBalance().equals(balanceBeforePurchase)) // they could not afford the option
         {
